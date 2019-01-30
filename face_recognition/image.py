@@ -19,13 +19,13 @@ def load_image_file(file, mode='RGB'):
     return img
 
 
-def show_image_file(title='Window', img):
+def show_image_file(img,title='Window'):
     """
     Show an image file
     :param title: Window name
     :param img: img object
     :return: NA
     """
-    img = cv2.imread(title,img)
+    img = cv2.imshow(title,img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
