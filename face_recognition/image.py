@@ -29,7 +29,7 @@ def load_image_Camera(cam):
     '''
     _, frame = cam.read()
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    return cam,gray
+    return gray
 
 
 
@@ -55,10 +55,10 @@ def show_image_file(img,title='Window'):
     
     
 def face_Detection(gray):
-    face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-    
+    face_cascade = cv2.CascadeClassifier('.//face_recognition//haarcascade_frontalface_default.xml')
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.55, minNeighbors=5, minSize=(40,40))
     #for (x,y,w,h) in faces:
     #    cv2.rectangle(cam,(x,y),(x+w,y+h),(255,0,0),2)
     #    roi_gray = gray[y:y+h, x:x+w]
     #    roi_color = cam[y:y+h, x:x+w]
-    return True
+    return faces
