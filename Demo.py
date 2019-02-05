@@ -3,13 +3,12 @@ Created on Jan 30, 2019
 
 @author: Sumit
 '''
-import face_recognition
+import face_recognition as fr 
 import cv2
-import numpy as np
 
 
 def video():
-    cam = face_recognition.load_Camera()
+    cam = fr.
     while(True):
         gray = face_recognition.load_image_Camera(cam)
         faces = face_recognition.face_Detection(gray)
@@ -21,7 +20,7 @@ def video():
             break
     face_recognition.realease_Camera(cam)
     cv2.destroyAllWindows()
-
+    face_recognition.image(faces)
 def main():
     image=face_recognition.load_image_file('image.JPG')
     

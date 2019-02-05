@@ -4,55 +4,66 @@ Created on Jan 30, 2019
 @author: Sumit
 '''
 import cv2
-import numpy as np
+from _elementtree import Element
 
-def load_Camera(cameraID=0):
-    '''
-    initiate camera 
-    :param cameraID: connection of camera default is 0 
-    '''
-    cam = cv2.VideoCapture(cameraID)
-    return cam
+class camera(Element):
+    def __init__(self, cameraID):
+        self.camera=cameraID
 
-def realease_Camera(cam):
-    '''
-    realease camera 
-    :param cam: Camera object 
-    '''
-    cam.release()
+    def load_Camera(self):
+        '''
+        initiate camera 
+        :param cameraID: connection of camera default is 0 
+        '''
+        cam = cv2.VideoCapture(self.camera)
+        return cam
+    
+    def realease_Camera(self):
+        '''
+        realease camera 
+        :param cam: Camera object 
+        '''
+        self.camera.release()
+    
+
+
+
+class image(Element):
+    def __init__(self, image):
+        self.image = image
+
+    
+    def load_image_Camera(self, cam):
+        '''
+        Read image from camera image from camera and return object 
+        :param cam: connection of camera default is 0 
+        '''
+        _, frame = cam.read()
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        return gray
     
     
-def load_image_Camera(cam):
-    '''
-    Read image from camera image from camera and return object 
-    :param cam: connection of camera default is 0 
-    '''
-    _, frame = cam.read()
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    return gray
-
-
-
-def load_image_file(file, mode='RGB'):
-    '''
-    Loads an image file (.jpg, .png, etc) into a numpy array
-    :param file: image file name or file object to load
-    :param mode: format to convert the image to. Only 'RGB' (8-bit RGB, 3 channels) and 'L' (black and white) are supported.
-    :return: image contents as numpy array
-    '''
-    img = cv2.imread(file)
-    return img
-
-
-def show_image_file(img,title='Window'):
-    '''
-    Show an image file
-    :param title: Window name
-    :param img: img object
-    :return: NA
-    '''
-    img = cv2.imshow(title,img)
     
+    def load_image_file(self, file, mode='RGB'):
+        '''
+        Loads an image file (.jpg, .png, etc) into a numpy array
+        :param file: image file name or file object to load
+        :param mode: format to convert the image to. Only 'RGB' (8-bit RGB, 3 channels) and 'L' (black and white) are supported.
+        :return: image contents as numpy array
+        '''
+        img = cv2.imread(file)
+        return img
+    
+    
+    def show_image_file(self, img,title='Window'):
+        '''
+        Show an image file
+        :param title: Window name
+        :param img: img object
+        :return: NA
+        '''
+        img = cv2.imshow(title,img)
+        
     
 def face_Detection(gray):
     face_cascade = cv2.CascadeClassifier('.//face_recognition//haarcascade_frontalface_default.xml')
