@@ -9,21 +9,21 @@ from _elementtree import Element
 class camera(Element):
     def __init__(self, cameraID):
         self.camera=cameraID
+        self.cam=None
 
     def load_Camera(self):
         '''
         initiate camera 
         :param cameraID: connection of camera default is 0 
         '''
-        cam = cv2.VideoCapture(self.camera)
-        return cam
+        self.cam = cv2.VideoCapture(self.camera)
     
     def realease_Camera(self):
         '''
         realease camera 
         :param cam: Camera object 
         '''
-        self.camera.release()
+        self.cam.release()
     
 
 
