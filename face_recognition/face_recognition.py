@@ -14,33 +14,41 @@ class camera(Element):
     def load_Camera(self):
         '''
         initiate camera 
-        :param cameraID: connection of camera default is 0 
+        :param NA 
         '''
         self.cam = cv2.VideoCapture(self.camera)
     
     def realease_Camera(self):
         '''
         realease camera 
-        :param cam: Camera object 
+        :param NA 
         '''
         self.cam.release()
-    
-
 
 
 class image(Element):
-    def __init__(self, image):
-        self.image = image
+    def __init__(self, cam):
+        self.frame=None
+        self.cam = cam
+        self.gray=None
 
-    
-    def load_image_Camera(self, cam):
+
+    def read_Frame(self):
         '''
         Read image from camera image from camera and return object 
         :param cam: connection of camera default is 0 
         '''
-        _, frame = cam.read()
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        return gray
+        _, self.frame = self.cam.read()
+
+
+    
+    def gray_frame(self):
+        '''
+        Read image from camera image from camera and return object 
+        :param cam: connection of camera default is 0 
+        '''
+        self.gray = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
+        
     
     
     
@@ -55,15 +63,17 @@ class image(Element):
         return img
     
     
-    def show_image_file(self, img,title='Window'):
+    def show_Frame(self, title='Window'):
         '''
         Show an image file
         :param title: Window name
         :param img: img object
         :return: NA
         '''
-        img = cv2.imshow(title,img)
+        img = cv2.imshow(title, self.frame)
         
+
+
     
 def face_Detection(gray):
     face_cascade = cv2.CascadeClassifier('.//face_recognition//haarcascade_frontalface_default.xml')
