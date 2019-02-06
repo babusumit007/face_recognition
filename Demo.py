@@ -6,21 +6,17 @@ Created on Jan 30, 2019
 import face_recognition as fr 
 
 def video():
-    camera=fr.camera(1)
+    camera=fr.camera(0)
     camera.load_Camera()
+    #camera.read_frame()
+    
     while(True):
         img=fr.image(camera.cam)
         img.read_Frame()
-        #img.gray_frame()
-        print('frame', img.frame)
-    #    img_frame.show_Frame("title")
-        print('inside loop')
+        img.gray_frame()
+        img.show_Frame("title")
         break    
     
-    
-    
-    
-    print('outside loop')
     camera.realease_Camera()
     
 

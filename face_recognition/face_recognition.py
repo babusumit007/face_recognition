@@ -18,6 +18,14 @@ class camera(Element):
         '''
         self.cam = cv2.VideoCapture(self.camera)
     
+    def read_frame(self):
+        '''
+        initiate camera 
+        :param NA 
+        '''
+        _, frame = self.cam.read()
+        print(frame)
+    
     def realease_Camera(self):
         '''
         realease camera 
@@ -40,7 +48,6 @@ class image(Element):
         '''
         _, self.frame = self.cam.read()
 
-
     
     def gray_frame(self):
         '''
@@ -48,7 +55,7 @@ class image(Element):
         :param cam: connection of camera default is 0 
         '''
         self.gray = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
-        
+        print(self.gray)
     
     
     
