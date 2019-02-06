@@ -24,7 +24,6 @@ class camera(Element):
         :param NA 
         '''
         _, frame = self.cam.read()
-        print(frame)
     
     def realease_Camera(self):
         '''
@@ -55,19 +54,17 @@ class image(Element):
         :param cam: connection of camera default is 0 
         '''
         self.gray = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
-        print(self.gray)
     
     
     
-    def load_image_file(self, file, mode='RGB'):
+    def read_image(self, file):
         '''
         Loads an image file (.jpg, .png, etc) into a numpy array
         :param file: image file name or file object to load
         :param mode: format to convert the image to. Only 'RGB' (8-bit RGB, 3 channels) and 'L' (black and white) are supported.
         :return: image contents as numpy array
         '''
-        img = cv2.imread(file)
-        return img
+        self.frame = cv2.imread(file)
     
     
     def show_Frame(self, title='Window'):
@@ -78,15 +75,11 @@ class image(Element):
         :return: NA
         '''
         img = cv2.imshow(title, self.frame)
-        
-
-
     
-def face_Detection(gray):
-    face_cascade = cv2.CascadeClassifier('.//face_recognition//haarcascade_frontalface_default.xml')
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.55, minNeighbors=5, minSize=(40,40))
-    #for (x,y,w,h) in faces:
-    #    cv2.rectangle(cam,(x,y),(x+w,y+h),(255,0,0),2)
-    #    roi_gray = gray[y:y+h, x:x+w]
-    #    roi_color = cam[y:y+h, x:x+w]
-    return faces
+    def face_Detection(self):
+        face_cascade = cv2.CascadeClassifier('.//face_recognition//Tools//haarcascade_frontalface_default.xml')
+        faces = face_cascade.detectMultiScale(self.frame, scaleFactor=1.55, minNeighbors=5, minSize=(40,40))
+        print(faces)
+        for (x,y,w,h) in faces:
+            cv2.rectangle(self.frame,(x,y),(x+w,y+h),(255,0,0),2)
+            roi_color = self.frame[y:y+h, x:x+w]
