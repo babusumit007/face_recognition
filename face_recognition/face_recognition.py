@@ -3,6 +3,7 @@ Created on Jan 30, 2019
 
 @author: Sumit
 '''
+import os
 import cv2
 from _elementtree import Element
 
@@ -24,6 +25,7 @@ class camera(Element):
         :param NA 
         '''
         _, frame = self.cam.read()
+        return frame
     
     def realease_Camera(self):
         '''
@@ -66,7 +68,11 @@ class image(Element):
         '''
         self.frame = cv2.imread(file)
     
-    
+    def write_image(self, file_name):
+        print(file_name + ".jpg")
+        cv2.imwrite(file_name + ".jpg", self.frame)
+        
+        
     def show_Frame(self, title='Window'):
         '''
         Show an image file
@@ -79,7 +85,6 @@ class image(Element):
     def face_Detection(self):
         face_cascade = cv2.CascadeClassifier('.//face_recognition//Tools//haarcascade_frontalface_default.xml')
         faces = face_cascade.detectMultiScale(self.frame, scaleFactor=1.55, minNeighbors=5, minSize=(40,40))
-        print(faces)
         for (x,y,w,h) in faces:
             cv2.rectangle(self.frame,(x,y),(x+w,y+h),(255,0,0),2)
             roi_color = self.frame[y:y+h, x:x+w]

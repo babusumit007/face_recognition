@@ -5,6 +5,7 @@ Created on Jan 30, 2019
 '''
 import face_recognition as fr
 import cv2 
+import face_recognition.faces_train as ft
 
 def video():
     camera=fr.camera(0)
@@ -14,8 +15,8 @@ def video():
     while(True):
         img=fr.image(camera.cam)
         img.read_Frame()
-        #img.gray_frame()
         img.face_Detection()
+        #img.write_image("sumit")
         img.show_Frame("Face Recognition")
         if cv2.waitKey(50) & 0xFF == ord('q'):
             break
@@ -24,4 +25,5 @@ def video():
     
 
 if __name__ == '__main__':
-    video()
+    #video()
+    ft.create("images")
