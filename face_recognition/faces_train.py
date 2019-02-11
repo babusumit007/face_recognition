@@ -8,15 +8,20 @@ import pickle
 from PIL import Image
 import numpy as np
 import cv2
+import pickle
 
 BASE_DIR = os.path.dirname(os.path.abspath(__name__))
 
 face_cascade = cv2.CascadeClassifier('.//face_recognition//Tools//haarcascade_frontalface_default.xml')
+recognizer = cv2.face.LBPHFaceRecognizer_create()
 
-y_lables = []
-x_train = []
 
 def create(images):
+    current_id=0
+    lables_ids={}
+    y_lables = []
+    x_train = []
+
     image_dir = os.path.join(BASE_DIR, images)
     for root, dirs, files in os.walk(image_dir):
         for file in files:
@@ -24,26 +29,24 @@ def create(images):
                 path = os.path.join(root, file)
                 lable = os.path.basename(root).replace(" ","-" ).lower()
                 #print(lable, path)
-                #y_lables.append(lable)
-                #x_train.append(path)
+                if not lable in lables_ids:
+                    lables_ids[lable] = current_id
+                    current_id += 1
+                id_ = lables_ids[lable]
                 pil_image = Image.open(path).convert("L")#grayscale
                 image_array = np.array(pil_image)
                 #print(image_array)
                 faces = face_cascade.detectMultiScale(image_array, scaleFactor=1.55, minNeighbors=5, minSize=(40,40))
-                for (x,y,w,h) in faces:
-                    cv2.rectangle(image_array,(x,y),(x+w,y+h),(255,0,0),2)
-                    roi_color = image_array[y:y+h, x:x+w]
-                    print(roi_color)
-                    x_train.append(roi_color)
-                    
-                    
-                    
-                    
-                    
-                    #while True:
-                    #    cv2.imshow('temp',image_array)
-                    #    if cv2.waitKey(50) & 0xFF == ord('q'):
-                    #        break
- 
                 
-#print(x_train)                
+                
+                for (x,y,w,h) in faces:
+                    roi = image_array[y:y+h, x:x+w]
+                    x_train.append(roi)
+                    y_lables.append(id_)
+                    print(x_train, y_lables )
+                    
+    with open('labels.pickle', 'wb') as f:
+        pickle.dump(lables_ids,f)  
+        
+    recognizer.train(x_train,np.array(y_lables))   
+    recognizer.save("trainner.yml")     
