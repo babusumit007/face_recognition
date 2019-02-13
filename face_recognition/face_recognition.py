@@ -92,7 +92,7 @@ class image(Element):
         faces = self.face_cascade.detectMultiScale(self.frame, scaleFactor=1.55, minNeighbors=5, minSize=(40,40))
         #print(labels)
         for (x,y,w,h) in faces:
-            cv2.rectangle(self.frame,(x,y),(x+w,y+h),(255,0,0),2)
+            
             #roi_color = self.frame[y:y+h, x:x+w]
             roi_gray = self.gray[y:y+h, x:x+w]
             
@@ -101,8 +101,17 @@ class image(Element):
             id_,conf=self.recognizer.predict(roi_gray)
             if conf >=45 and conf<=85:
                 print(id_)
+                print(labels[id_])
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                name=labels[id_]
+                color=(255,255,255)
+                stroke=2
+                cv2.putText(self.frame,name, (x,y),font,1, color, stroke, cv2.LINE_AA)
+                
             
-        
+            
+            
+            cv2.rectangle(self.frame,(x,y),(x+w,y+h),(255,0,0),2)
         
         
         
