@@ -6,6 +6,7 @@ Created on Jan 30, 2019
 import os
 import cv2
 from _elementtree import Element
+import pickle
 
 class camera(Element):
     def __init__(self, cameraID):
@@ -40,8 +41,13 @@ class image(Element):
         self.frame=None
         self.cam = cam
         self.gray=None
-
-
+        self.face_cascade = cv2.CascadeClassifier('.//face_recognition//Tools//haarcascade_frontalface_default.xml')
+        
+        self.recognizer = cv2.face.LBPHFaceRecognizer_create()
+        self.recognizer.read("trainner.yml")
+        
+        
+        
     def read_Frame(self):
         '''
         Read image from camera image from camera and return object 
@@ -82,9 +88,27 @@ class image(Element):
         '''
         img = cv2.imshow(title, self.frame)
     
-    def face_Detection(self):
-        face_cascade = cv2.CascadeClassifier('.//face_recognition//Tools//haarcascade_frontalface_default.xml')
-        faces = face_cascade.detectMultiScale(self.frame, scaleFactor=1.55, minNeighbors=5, minSize=(40,40))
+    def face_Detection(self, labels):
+        faces = self.face_cascade.detectMultiScale(self.frame, scaleFactor=1.55, minNeighbors=5, minSize=(40,40))
+        #print(labels)
         for (x,y,w,h) in faces:
             cv2.rectangle(self.frame,(x,y),(x+w,y+h),(255,0,0),2)
-            roi_color = self.frame[y:y+h, x:x+w]
+            #roi_color = self.frame[y:y+h, x:x+w]
+            roi_gray = self.gray[y:y+h, x:x+w]
+            
+        
+            
+            id_,conf=self.recognizer.predict(roi_gray)
+            if conf >=45 and conf<=85:
+                print(id_)
+            
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        

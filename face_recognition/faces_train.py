@@ -50,3 +50,12 @@ def create(images):
         
     recognizer.train(x_train,np.array(y_lables))   
     recognizer.save("trainner.yml")     
+    
+    
+def read():
+        labels={"person_name": 1}
+        with open('labels.pickle', 'rb') as f:
+            pass
+            or_lables= pickle.load(f)  
+            labels={v:k for k,v in or_lables.items()}
+        return labels
