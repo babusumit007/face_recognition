@@ -99,6 +99,7 @@ class image(Element):
         
             
             id_,conf=self.recognizer.predict(roi_gray)
+            print(conf)
             if conf >=45 and conf<=85:
                 print(id_)
                 print(labels[id_])
